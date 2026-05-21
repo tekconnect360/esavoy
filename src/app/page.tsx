@@ -1,65 +1,92 @@
-import Image from "next/image";
+import Link from "next/link";
+
+const highlights = [
+  {
+    icon: "⚙️",
+    title: "Automatisation industrielle",
+    desc: "Programmation et intégration de systèmes PLC (Allen-Bradley, Siemens, Schneider) pour des environnements de production exigeants.",
+  },
+  {
+    icon: "🖥️",
+    title: "TI industrielle",
+    desc: "Réseaux industriels, SCADA, HMI et infrastructure TI adaptée aux contraintes du plancher de production.",
+  },
+  {
+    icon: "🎓",
+    title: "Formation & transfert de connaissances",
+    desc: "Accompagnement d'équipes techniques, formation sur mesure et documentation pour consolider les acquis.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      {/* Hero */}
+      <section className="bg-slate-900 text-white py-20 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-blue-400 text-sm font-semibold uppercase tracking-widest mb-3">
+            Technicien en automatisation
           </p>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-5">
+            20 ans d&apos;expertise au service de votre industrie
+          </h1>
+          <p className="text-slate-300 text-lg mb-8 max-w-xl mx-auto">
+            Conseil, intégration et formation en automatisation industrielle et TI —
+            des solutions concrètes adaptées à vos opérations.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/services"
+              className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-7 rounded-lg transition-colors"
+            >
+              Voir les services
+            </Link>
+            <Link
+              href="/contact"
+              className="border border-slate-500 hover:border-blue-400 text-slate-200 hover:text-blue-300 font-medium py-3 px-7 rounded-lg transition-colors"
+            >
+              Me contacter
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Highlights */}
+      <section className="py-16 px-6">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl font-bold text-center text-slate-800 mb-10">
+            Ce que j&apos;apporte à vos projets
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {highlights.map(({ icon, title, desc }) => (
+              <div
+                key={title}
+                className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-shadow"
+              >
+                <div className="text-3xl mb-3">{icon}</div>
+                <h3 className="font-semibold text-slate-800 mb-2">{title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* CTA band */}
+      <section className="bg-blue-700 text-white py-12 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-2xl font-bold mb-3">Prêt à discuter de votre projet ?</h2>
+          <p className="text-blue-100 mb-6">
+            Que ce soit pour un mandat ponctuel, une intégration ou de la formation, prenez contact — sans engagement.
+          </p>
+          <Link
+            href="/contact"
+            className="bg-white text-blue-700 font-semibold py-3 px-8 rounded-lg hover:bg-blue-50 transition-colors"
+          >
+            Envoyer un message
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }
