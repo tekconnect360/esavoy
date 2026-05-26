@@ -17,7 +17,8 @@ interface Entry {
   name: string;
   dish: string;
   category: Category;
-  allergies: string | null;
+  dish_allergens: string | null;
+  personal_allergies: string | null;
   created_at: string;
 }
 
@@ -27,8 +28,13 @@ export default function PotluckClient() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState<{
-    name: string; dish: string; category: Category; allergies: string; password: string;
-  }>({ name: "", dish: "", category: CATEGORIES[0], allergies: "", password: "" });
+    name: string;
+    dish: string;
+    category: Category;
+    dish_allergens: string;
+    personal_allergies: string;
+    password: string;
+  }>({ name: "", dish: "", category: CATEGORIES[0], dish_allergens: "", personal_allergies: "", password: "" });
   const [status, setStatus] = useState<FormStatus>("idle");
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deletePassword, setDeletePassword] = useState("");
@@ -62,7 +68,7 @@ export default function PotluckClient() {
       if (res.status === 401) { setStatus("wrong-password"); return; }
       if (!res.ok) { setStatus("error"); return; }
       setStatus("success");
-      setForm({ name: "", dish: "", category: CATEGORIES[0], allergies: "", password: "" });
+      setForm({ name: "", dish: "", category: CATEGORIES[0], dish_allergens: "", personal_allergies: "", password: "" });
       fetchEntries();
     } catch {
       setStatus("error");
@@ -86,6 +92,8 @@ export default function PotluckClient() {
     acc[cat] = entries.filter((e) => e.category === cat);
     return acc;
   }, {} as Record<Category, Entry[]>);
+
+  const withPersonalAllergies = entries.filter((e) => e.personal_allergies);
 
   const inputClass = "w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent";
 
@@ -125,9 +133,9 @@ export default function PotluckClient() {
                               <span className="text-slate-400"> — </span>
                               {e.dish}
                             </span>
-                            {e.allergies && (
+                            {e.dish_allergens && (
                               <span className="text-xs text-red-500 mt-0.5">
-                                ⚠️ Allergies: {e.allergies}
+                                ⚠️ Contains: {e.dish_allergens}
                               </span>
                             )}
                           </div>
@@ -147,6 +155,22 @@ export default function PotluckClient() {
             </div>
           )}
         </div>
+
+        {/* Personal allergies section */}
+        {withPersonalAllergies.length > 0 && (
+          <div className="bg-red-50 border border-red-100 rounded-2xl p-6 mb-6">
+            <h2 className="font-semibold text-red-700 mb-3 text-lg">⚠️ Allergy notices</h2>
+            <p className="text-xs text-red-400 mb-3">Please keep these in mind when preparing your dish.</p>
+            <ul className="flex flex-col gap-2">
+              {withPersonalAllergies.map((e) => (
+                <li key={e.id} className="flex items-start gap-2 text-sm">
+                  <span className="font-medium text-slate-700">{e.name}:</span>
+                  <span className="text-red-600">{e.personal_allergies}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Add form */}
         <div className="bg-white rounded-2xl shadow-sm border border-orange-100 p-6">
@@ -198,18 +222,35 @@ export default function PotluckClient() {
               </div>
             </div>
 
-            {/* Allergies */}
-            <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">
-                Allergies <span className="text-slate-400 font-normal">(optional — please specify if your dish contains any)</span>
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. nuts, gluten, dairy..."
-                value={form.allergies}
-                onChange={(e) => setForm({ ...form, allergies: e.target.value })}
-                className={inputClass}
-              />
+            {/* Allergens divider */}
+            <div className="border-t border-slate-100 pt-3 mt-1">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Allergy info (optional)</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
+                    My dish contains
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. nuts, gluten, dairy..."
+                    value={form.dish_allergens}
+                    onChange={(e) => setForm({ ...form, dish_allergens: e.target.value })}
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
+                    I am allergic to
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. peanuts, shellfish..."
+                    value={form.personal_allergies}
+                    onChange={(e) => setForm({ ...form, personal_allergies: e.target.value })}
+                    className={inputClass}
+                  />
+                </div>
+              </div>
             </div>
 
             {status === "wrong-password" && (
