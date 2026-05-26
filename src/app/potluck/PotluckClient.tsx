@@ -17,7 +17,6 @@ interface Entry {
   name: string;
   dish: string;
   category: Category;
-  dish_allergens: string | null;
   personal_allergies: string | null;
   created_at: string;
 }
@@ -31,10 +30,9 @@ export default function PotluckClient() {
     name: string;
     dish: string;
     category: Category;
-    dish_allergens: string;
     personal_allergies: string;
     password: string;
-  }>({ name: "", dish: "", category: CATEGORIES[0], dish_allergens: "", personal_allergies: "", password: "" });
+  }>({ name: "", dish: "", category: CATEGORIES[0], personal_allergies: "", password: "" });
   const [status, setStatus] = useState<FormStatus>("idle");
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deletePassword, setDeletePassword] = useState("");
@@ -68,7 +66,7 @@ export default function PotluckClient() {
       if (res.status === 401) { setStatus("wrong-password"); return; }
       if (!res.ok) { setStatus("error"); return; }
       setStatus("success");
-      setForm({ name: "", dish: "", category: CATEGORIES[0], dish_allergens: "", personal_allergies: "", password: "" });
+      setForm({ name: "", dish: "", category: CATEGORIES[0], personal_allergies: "", password: "" });
       fetchEntries();
     } catch {
       setStatus("error");
@@ -133,11 +131,6 @@ export default function PotluckClient() {
                               <span className="text-slate-400"> — </span>
                               {e.dish}
                             </span>
-                            {e.dish_allergens && (
-                              <span className="text-xs text-red-500 mt-0.5">
-                                ⚠️ Contains: {e.dish_allergens}
-                              </span>
-                            )}
                           </div>
                           <button
                             onClick={() => { setDeleteId(e.id); setDeletePassword(""); setDeleteError(false); }}
@@ -222,35 +215,18 @@ export default function PotluckClient() {
               </div>
             </div>
 
-            {/* Allergens divider */}
+            {/* Personal allergies */}
             <div className="border-t border-slate-100 pt-3 mt-1">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Allergy info (optional)</p>
-              <div className="grid sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-600 mb-1">
-                    My dish contains
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. nuts, gluten, dairy..."
-                    value={form.dish_allergens}
-                    onChange={(e) => setForm({ ...form, dish_allergens: e.target.value })}
-                    className={inputClass}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-600 mb-1">
-                    I am allergic to
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. peanuts, shellfish..."
-                    value={form.personal_allergies}
-                    onChange={(e) => setForm({ ...form, personal_allergies: e.target.value })}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">
+                Do you have any food allergies? <span className="text-slate-400 font-normal">(optional)</span>
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. peanuts, shellfish, gluten..."
+                value={form.personal_allergies}
+                onChange={(e) => setForm({ ...form, personal_allergies: e.target.value })}
+                className={inputClass}
+              />
             </div>
 
             {status === "wrong-password" && (

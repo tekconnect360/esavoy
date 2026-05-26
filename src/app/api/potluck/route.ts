@@ -34,7 +34,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, dish, category, dish_allergens, personal_allergies, password } = body;
+    const { name, dish, category, personal_allergies, password } = body;
 
     if (password !== POTLUCK_PASSWORD) {
       return NextResponse.json({ error: "Wrong password" }, { status: 401 });
@@ -51,7 +51,6 @@ export async function POST(req: NextRequest) {
         name: name.trim(),
         dish: dish.trim(),
         category,
-        dish_allergens: dish_allergens?.trim() || null,
         personal_allergies: personal_allergies?.trim() || null,
       });
 
