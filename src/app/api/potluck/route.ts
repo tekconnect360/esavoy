@@ -34,7 +34,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, dish, category, password } = body;
+    const { name, dish, category, allergies, password } = body;
 
     if (password !== POTLUCK_PASSWORD) {
       return NextResponse.json({ error: "Wrong password" }, { status: 401 });
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     const supabase = getSupabase();
     const { error } = await supabase
       .from("potluck_entries")
-      .insert({ name: name.trim(), dish: dish.trim(), category });
+      .insert({ name: name.trim(), dish: dish.trim(), category, allergies: allergies?.trim() || null });
 
     if (error) {
       console.error("Supabase insert error:", error.message);

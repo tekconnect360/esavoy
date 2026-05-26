@@ -17,6 +17,7 @@ interface Entry {
   name: string;
   dish: string;
   category: Category;
+  allergies: string | null;
   created_at: string;
 }
 
@@ -25,7 +26,9 @@ type FormStatus = "idle" | "sending" | "success" | "error" | "wrong-password";
 export default function PotluckClient() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState<{ name: string; dish: string; category: Category; password: string }>({ name: "", dish: "", category: CATEGORIES[0], password: "" });
+  const [form, setForm] = useState<{
+    name: string; dish: string; category: Category; allergies: string; password: string;
+  }>({ name: "", dish: "", category: CATEGORIES[0], allergies: "", password: "" });
   const [status, setStatus] = useState<FormStatus>("idle");
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deletePassword, setDeletePassword] = useState("");
@@ -59,7 +62,7 @@ export default function PotluckClient() {
       if (res.status === 401) { setStatus("wrong-password"); return; }
       if (!res.ok) { setStatus("error"); return; }
       setStatus("success");
-      setForm({ name: "", dish: "", category: CATEGORIES[0], password: "" });
+      setForm({ name: "", dish: "", category: CATEGORIES[0], allergies: "", password: "" });
       fetchEntries();
     } catch {
       setStatus("error");
@@ -116,14 +119,21 @@ export default function PotluckClient() {
                     <ul className="flex flex-col gap-1.5">
                       {grouped[cat].map((e) => (
                         <li key={e.id} className="flex items-center justify-between bg-orange-50 rounded-lg px-3 py-2">
-                          <span className="text-sm text-slate-700">
-                            <span className="font-medium">{e.name}</span>
-                            <span className="text-slate-400"> — </span>
-                            {e.dish}
-                          </span>
+                          <div className="flex flex-col">
+                            <span className="text-sm text-slate-700">
+                              <span className="font-medium">{e.name}</span>
+                              <span className="text-slate-400"> — </span>
+                              {e.dish}
+                            </span>
+                            {e.allergies && (
+                              <span className="text-xs text-red-500 mt-0.5">
+                                ⚠️ Allergies: {e.allergies}
+                              </span>
+                            )}
+                          </div>
                           <button
                             onClick={() => { setDeleteId(e.id); setDeletePassword(""); setDeleteError(false); }}
-                            className="text-slate-300 hover:text-red-400 transition-colors text-xs ml-2"
+                            className="text-slate-300 hover:text-red-400 transition-colors text-xs ml-3 flex-shrink-0"
                             title="Remove"
                           >
                             ✕
@@ -186,6 +196,20 @@ export default function PotluckClient() {
                   className={inputClass}
                 />
               </div>
+            </div>
+
+            {/* Allergies */}
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">
+                Allergies <span className="text-slate-400 font-normal">(optional — please specify if your dish contains any)</span>
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. nuts, gluten, dairy..."
+                value={form.allergies}
+                onChange={(e) => setForm({ ...form, allergies: e.target.value })}
+                className={inputClass}
+              />
             </div>
 
             {status === "wrong-password" && (
