@@ -107,6 +107,24 @@ export default function PotluckClient() {
           <p className="text-xs text-slate-400 mt-2">List refreshes automatically every 15 seconds</p>
         </div>
 
+        {/* Allergy notices — ABOVE the food list */}
+        <div className="bg-red-50 border border-red-100 rounded-2xl p-6 mb-6">
+          <h2 className="font-semibold text-red-700 mb-1 text-lg">⚠️ Known people with allergies</h2>
+          <p className="text-xs text-red-400 mb-3">Please keep these in mind when preparing your dish.</p>
+          {withPersonalAllergies.length === 0 ? (
+            <p className="text-sm text-red-300 italic">No allergies reported yet.</p>
+          ) : (
+            <ul className="flex flex-col gap-2">
+              {withPersonalAllergies.map((e) => (
+                <li key={e.id} className="flex items-center gap-2 text-sm bg-white rounded-lg px-3 py-2">
+                  <span className="font-medium text-slate-700">{e.name}:</span>
+                  <span className="text-red-600">{e.personal_allergies}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
         {/* Current list */}
         <div className="bg-white rounded-2xl shadow-sm border border-orange-100 p-6 mb-6">
           <h2 className="font-semibold text-slate-700 mb-4 text-lg">Who&apos;s bringing what</h2>
@@ -124,21 +142,10 @@ export default function PotluckClient() {
                     </h3>
                     <ul className="flex flex-col gap-1.5">
                       {grouped[cat].map((e) => (
-                        <li key={e.id} className="flex items-center justify-between bg-orange-50 rounded-lg px-3 py-2">
-                          <div className="flex flex-col">
-                            <span className="text-sm text-slate-700">
-                              <span className="font-medium">{e.name}</span>
-                              <span className="text-slate-400"> — </span>
-                              {e.dish}
-                            </span>
-                          </div>
-                          <button
-                            onClick={() => { setDeleteId(e.id); setDeletePassword(""); setDeleteError(false); }}
-                            className="text-slate-300 hover:text-red-400 transition-colors text-xs ml-3 flex-shrink-0"
-                            title="Remove"
-                          >
-                            ✕
-                          </button>
+                        <li key={e.id} className="bg-orange-50 rounded-lg px-3 py-2 text-sm text-slate-700">
+                          <span className="font-medium">{e.name}</span>
+                          <span className="text-slate-400"> — </span>
+                          {e.dish}
                         </li>
                       ))}
                     </ul>
@@ -146,24 +153,6 @@ export default function PotluckClient() {
                 )
               )}
             </div>
-          )}
-        </div>
-
-        {/* Personal allergies section */}
-        <div className="bg-red-50 border border-red-100 rounded-2xl p-6 mb-6">
-          <h2 className="font-semibold text-red-700 mb-1 text-lg">⚠️ Allergy notices</h2>
-          <p className="text-xs text-red-400 mb-3">Please keep these in mind when preparing your dish.</p>
-          {withPersonalAllergies.length === 0 ? (
-            <p className="text-sm text-red-300 italic">No allergies reported yet.</p>
-          ) : (
-            <ul className="flex flex-col gap-2">
-              {withPersonalAllergies.map((e) => (
-                <li key={e.id} className="flex items-start gap-2 text-sm bg-white rounded-lg px-3 py-2">
-                  <span className="font-medium text-slate-700">{e.name}:</span>
-                  <span className="text-red-600">{e.personal_allergies}</span>
-                </li>
-              ))}
-            </ul>
           )}
         </div>
 
