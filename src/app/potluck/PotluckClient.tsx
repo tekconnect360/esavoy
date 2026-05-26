@@ -95,7 +95,10 @@ export default function PotluckClient() {
           <div className="text-5xl mb-3">🍽️</div>
           <h1 className="text-3xl font-bold text-slate-800">PC Potluck</h1>
           <p className="text-slate-500 mt-1">Monday, June 1st — Sign up below!</p>
-          <p className="text-xs text-slate-400 mt-1">List refreshes automatically every 15 seconds</p>
+          <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 text-sm font-medium px-4 py-1.5 rounded-full mt-2">
+            🔑 Password: <span className="font-bold tracking-widest">pc2026</span>
+          </div>
+          <p className="text-xs text-slate-400 mt-2">List refreshes automatically every 15 seconds</p>
         </div>
 
         {/* Current list */}
