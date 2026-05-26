@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
 
@@ -18,9 +16,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${geist.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-800 antialiased">
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

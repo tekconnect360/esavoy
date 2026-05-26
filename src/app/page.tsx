@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MainLayout from "@/components/MainLayout";
 
 const highlights = [
   {
@@ -20,7 +21,7 @@ const highlights = [
 
 export default function Home() {
   return (
-    <>
+    <MainLayout>
       {/* Hero */}
       <section className="bg-slate-900 text-white py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
@@ -35,16 +36,10 @@ export default function Home() {
             des solutions concrètes adaptées à vos opérations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/services"
-              className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-7 rounded-lg transition-colors"
-            >
+            <Link href="/services" className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-7 rounded-lg transition-colors">
               Voir les services
             </Link>
-            <Link
-              href="/contact"
-              className="border border-slate-500 hover:border-blue-400 text-slate-200 hover:text-blue-300 font-medium py-3 px-7 rounded-lg transition-colors"
-            >
+            <Link href="/contact" className="border border-slate-500 hover:border-blue-400 text-slate-200 hover:text-blue-300 font-medium py-3 px-7 rounded-lg transition-colors">
               Me contacter
             </Link>
           </div>
@@ -59,10 +54,7 @@ export default function Home() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {highlights.map(({ icon, title, desc }) => (
-              <div
-                key={title}
-                className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-shadow"
-              >
+              <div key={title} className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-shadow">
                 <div className="text-3xl mb-3">{icon}</div>
                 <h3 className="font-semibold text-slate-800 mb-2">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
@@ -79,14 +71,11 @@ export default function Home() {
           <p className="text-blue-100 mb-6">
             Que ce soit pour un mandat ponctuel, une intégration ou de la formation, prenez contact — sans engagement.
           </p>
-          <Link
-            href="/contact"
-            className="bg-white text-blue-700 font-semibold py-3 px-8 rounded-lg hover:bg-blue-50 transition-colors"
-          >
+          <Link href="/contact" className="bg-white text-blue-700 font-semibold py-3 px-8 rounded-lg hover:bg-blue-50 transition-colors">
             Envoyer un message
           </Link>
         </div>
       </section>
-    </>
+    </MainLayout>
   );
 }
